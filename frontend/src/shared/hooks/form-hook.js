@@ -6,6 +6,9 @@ const formReducer = (state, action) => {
             console.log("input_change")
             let formIsValid = true;
             for(const inputId in state.inputs){
+                if(!state.inputs[inputId]){
+                    continue;
+                }
                 if(inputId === action.inputId){
                     formIsValid = formIsValid && action.isValid;
                 }
