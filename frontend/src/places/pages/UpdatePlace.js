@@ -67,7 +67,6 @@ const UpdatePlace =() =>{
             }, true);
             setIsLoading(true)
         }
-        setIsLoading(false)
     }, [setFormData, identifiedPlace]);
 
     const placeUpdateSubmitHandler = event => {

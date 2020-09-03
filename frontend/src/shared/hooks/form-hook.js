@@ -3,7 +3,6 @@ import { useCallback, useReducer } from 'react'
 const formReducer = (state, action) => {
     switch(action.type){
         case 'INPUT_CHANGE':
-            console.log("input_change")
             let formIsValid = true;
             for(const inputId in state.inputs){
                 if(!state.inputs[inputId]){
@@ -41,7 +40,6 @@ export const useForm = (initialInputs, initialFormValidity) => {
     });
 
     const inputHandler = useCallback((id, value, isValid) =>{
-        console.log("id : ",id, "value : ",value, "isValid : ", isValid)
         dispatch({type: 'INPUT_CHANGE', value : value, isValid : isValid, inputId : id});
     }, []);
 
