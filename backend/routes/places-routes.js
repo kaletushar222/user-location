@@ -1,7 +1,6 @@
 const express = require("express");
-
 const router = express.Router();
-
+const placesControllers = require('../controllers/places-controller')
 const DUMMY_PLACES = [
   {
     id: "p1",
@@ -29,26 +28,8 @@ const DUMMY_PLACES = [
   },
 ];
 
-router.get("/:placeid", (req, res, next) => {
-  const placeid = req.params.placeid;
-  const place = DUMMY_PLACES.find((place) => place.id === placeid);
-  if (!place) {
-		const error = new Error('Could not find requested place')
-		error.code = 404
-		throw error;
-  }
-  res.json({ place });
-});
+router.get("/:placeid", placesControllers.getPlaceById);
+router.get("/user/:userId", placesControllers.getPlaceByUserId);
 
-router.get("/user/:userId", (req, res, next) => {
-  const userId = req.params.userId;
-  const place = DUMMY_PLACES.find((place) => place.creator === userId);
-  if (!place) {
-    const error = new Error('Could not find requested place')
-		error.code = 404
-		return next(error)
-  }
-  res.json({ place });
-});
-
+router.post("/", placesControllers.createPlace)
 module.exports = router;
