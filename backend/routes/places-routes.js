@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const placesControllers = require('../controllers/places-controller')
+const placesControllers = require('../controllers/places-controllers')
 
 router.get("/:placeid", placesControllers.getPlaceById);
 router.get("/user/:userId", placesControllers.getPlacesByUserId);
