@@ -1,5 +1,6 @@
 const HttpError = require('../models/http-error')
 const { v4: uuidv4 } = require('uuid');
+
 let DUMMY_PLACES =[
     {
         id : 'p1',
@@ -15,16 +16,28 @@ let DUMMY_PLACES =[
     },
     {
         id : 'p2',
-        title: 'Tukai darshan hill',
-        description : "One of the best hill",
+        title: 'Magar patta corner',
+        description : "Best food stalls",
         imageUrl :"https://source.unsplash.com/user/mike/likes/1600x900",
-        address : "Hadapsar Gaon, Hadapsar, Pune, Maharashtra 411028",
+        address : "Magarpatta,  Pune, Maharashtra 411028",
         location : {
-            lat  : 18.511304, 
+            lat  : 28.511304, 
             lng : 73.922800
         },
         creator : "u2"
-    }
+    },
+    {
+        id : 'p1',
+        title: 'Ramdara',
+        description : "God Ram temple ",
+        imageUrl :"https://source.unsplash.com/user/erondu/likes/1600x900",
+        address : "Loni kalbor",
+        location : {
+            lat  : 58.511304, 
+            lng : 73.922800
+        },
+        creator : "u1"
+    },
 ]
 
 const getPlaceById = (req, res, next) => {
@@ -36,15 +49,15 @@ const getPlaceById = (req, res, next) => {
     res.json({ place })
 };
 
-const getPlaceByUserId = (req, res, next) => {
+const getPlacesByUserId = (req, res, next) => {
     const userId = req.params.userId;
-    const place = DUMMY_PLACES.find((place) => place.creator === userId);
-    if (!place) {
-        if (!place) {
-            throw new HttpError('Could not find a place for the provided id', 404)
-        }
+    const places = DUMMY_PLACES.filter((place) => place.creator === userId);
+    if (!places || places.length === 0) {
+        return next(
+            new HttpError('Could not find a places for the provided userid.', 404)
+        );
     }
-    res.json({ place });
+    res.json({ places });
 };
 
 const createPlace = (req, res, next) => {
@@ -82,7 +95,7 @@ const deletePlace = (req, res, next) =>{
 
 
 exports.getPlaceById = getPlaceById;
-exports.getPlaceByUserId = getPlaceByUserId
+exports.getPlacesByUserId = getPlacesByUserId
 exports.createPlace = createPlace
 exports.updatePlace = updatePlace
 exports.deletePlace = deletePlace
