@@ -27,7 +27,7 @@ app.use((error, req, res, next)=>{
 });
 
 mongoose
-.connect('mongodb+srv://tushar:tushar@cluster0.5cwgq.mongodb.net/places?retryWrites=true&w=majority')
+.connect('mongodb+srv://tushar:tushar@cluster0.5cwgq.mongodb.net/<dbname>?retryWrites=true&w=majority')
 .then(()=>{
     app.listen(5000);
 })
