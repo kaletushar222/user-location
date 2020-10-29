@@ -162,14 +162,37 @@ const updatePlace = (req, res, next) => {
     res.status(200).json({place : updatedPlace})
 }
 
-const deletePlace = (req, res, next) =>{
-    const placeid = req.params.pid;
-    if(!DUMMY_PLACES.find(p=> p.id === placeid)){
-        return(new HttpError('Could not find a place for that id.', 404))
+const deletePlace = async (req, res, next) =>{
+    const placeId = req.params.pid;
+    console.log("placeId : ",placeId)
+    let place;
+    try{
+        place = await Place.findById(placeId).populate('creator')
+        console.log("place : ",place)
     }
-    DUMMY_PLACES = DUMMY_PLACES.filter(p=> p.id !== placeid)
-    console.log(DUMMY_PLACES)
-    res.status(200).json({message : "Place deleted"})
+    catch(err){
+        const error = new HttpError('Somthing went wrong, could not delete place', 500)
+        return next(error);
+    };
+    if(!place){
+        const error = new HttpError("could not find place for this id", 404)
+        return next(error)
+    }
+
+    try{
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        await place.remove({session: sess});
+        place.creator.places.pull(place);
+        await place.creator.save({session: sess});
+        await sess.commitTransaction();
+    }   
+    catch(err){
+        const error = new HttpError('Somthing went wrong')
+        return next(error)
+    }
+
+    res.status(200).json({message: 'Deleted Place'});
 }
 
 
