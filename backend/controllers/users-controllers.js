@@ -18,6 +18,7 @@ const getUsers = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
+  console.log("req : ", req)
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
