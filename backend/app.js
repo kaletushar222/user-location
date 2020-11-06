@@ -6,8 +6,6 @@ const placesRoutes = require('./routes/places-routes')
 const usersRoutes = require('./routes/users-routes')
 const HttpError = require('./models/http-error')
 
-var cors = require('cors')
-
 const app = express()
 
 app.use(bodyParser.json());
@@ -38,8 +36,9 @@ app.use((error, req, res, next)=>{
 });
 
 mongoose
-.connect('mongodb+srv://tushar:tushar@cluster0.5cwgq.mongodb.net/<dbname>?retryWrites=true&w=majority')
+.connect('mongodb+srv://tushar:tushar@cluster0.5cwgq.mongodb.net/userlocation?retryWrites=true&w=majority')
 .then(()=>{
+    console.log("listi")
     app.listen(5000);
 })
 .catch(err => {
